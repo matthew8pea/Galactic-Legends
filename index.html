@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- itch.io / static host: re-upload this file to ship updates; if players see a stale build, bump ?v= on the page or embed URL. -->
+    <title>Galactic Legends</title>
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="statCard"></div>
+    <div class="game-container">
+        <!-- ── LOADING SCREEN ── -->
+        <div id="loadingScreen">
+            <div class="loading-stars splash-stars" id="loadingStars"></div>
+            <div class="loading-content">
+                <p class="loading-eyebrow">Cousin Crew Studios</p>
+                <h1 class="loading-title">Galactic Legends</h1>
+                <div class="loading-bar-track">
+                    <div class="loading-bar-fill" id="loadingBarFill"></div>
+                </div>
+                <div class="loading-pct" id="loadingPct">0%</div>
+                <div class="loading-tip" id="loadingTip">Loading assets…</div>
+            </div>
+        </div>
+
+        <!-- ── SPLASH / MAIN MENU ── -->
+        <div id="splashMenu">
+            <div class="splash-stars" id="splashStars"></div>
+            <div class="splash-top">
+                <p class="splash-eyebrow">Cousin Crew Studios</p>
+                <h1 class="splash-title">Welcome to Galactic Legends</h1>
+                <div class="splash-divider"></div>
+            </div>
+            <div class="splash-buttons">
+                <button class="splash-btn splash-btn-freeplay" id="btnFreeplay">Freeplay</button>
+                <button class="splash-btn splash-btn-shop" id="btnShop">Shop</button>
+            </div>
+        </div>
+
+        <div id="mainMenu" class="menu-container" style="display:none;">
+            <h1 class="title">Galactic Legends</h1>
+            <p class="subtitle">Select your Battalion, Legion, or Hero.</p>
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search characters...">
+            </div>
+            <div class="faction-wrapper">
+                <div class="faction-section">
+                    <h2 class="faction-title hero-faction">Grand Army & Heroes</h2>
+                    <div class="button-group" id="hero-roster"></div>
+                </div>
+
+                <div class="faction-section">
+                    <h2 class="faction-title villain-faction">Sith & Separatists</h2>
+                    <div class="button-group" id="villain-roster"></div>
+                </div>
+            </div>
+
+            <div class="faction-wrapper" id="secret-faction-wrapper" style="display: none;">
+                <div class="faction-section" style="width: 100%;">
+                    <h2 class="faction-title secret-faction" id="secret-faction-toggle" style="cursor: pointer; user-select: none;">Secret/DLC Characters <span id="secret-faction-chevron" style="margin-left: 8px; font-size: 0.8em;">▼</span></h2>
+                    <div class="secret-collapse-wrapper">
+                        <div class="button-group" id="secret-roster"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="opponentMenu">
+            <h1 class="title" style="margin:5px 0 0 0; font-size:1.6rem;">Choose Your Opponent</h1>
+
+            <div class="vs-banner">
+                <span id="vsBannerPlayer" class="vs-player-name"></span>
+                <span class="vs-label">VS</span>
+                <span class="vs-question">???</span>
+            </div>
+
+            <div class="opponent-actions">
+                <button class="surprise-button" id="surpriseBtn">⚡ Surprise Me!</button>
+                <button class="back-button" id="backBtn">← Back</button>
+            </div>
+
+            <div class="diff-row">
+                <button class="diff-btn easy" data-diff="easy">Easy</button>
+                <button class="diff-btn normal selected" data-diff="normal">Normal</button>
+                <button class="diff-btn hard" data-diff="hard">Hard</button>
+            </div>
+            <div class="arena-row" id="arenaRow">
+                <button class="arena-btn selected" data-arena="space" style="color:#8ae1ff;border-color:#224;">🌌 Deep Space</button>
+                <button class="arena-btn" data-arena="deathstar" style="color:#aaaaaa;">💀 Death Star</button>
+                <button class="arena-btn" data-arena="mustafar" style="color:#ff6600;">🌋 Mustafar</button>
+                <button class="arena-btn" data-arena="hoth" style="color:#aaddff;">❄️ Hoth</button>
+                <button class="arena-btn" data-arena="coruscant" style="color:#ffd700;">🏙️ Coruscant</button>
+                <button class="arena-btn" data-arena="moseisley" style="color:#d4a574;">🍺 Mos Eisley</button>
+                <button class="arena-btn" data-arena="tatooine" id="tatooineArenaBtn" style="color:#c9a066;display:none;">🌞 Tatooine</button>
+                <button class="arena-btn" data-arena="naboo" style="color:#b39ddb;">🏛️ Naboo</button>
+                <button class="arena-btn" id="randomArenaBtn" data-arena="" style="color:#cc99ff;border-color:#553366;">🎲 Random</button>
+            </div>
+            <div class="faction-wrapper">
+                <div class="faction-section">
+                    <h2 class="faction-title hero-faction" style="font-size:1rem;">Grand Army & Heroes</h2>
+                    <div class="button-group" id="opp-hero-roster"></div>
+                </div>
+                <div class="faction-section">
+                    <h2 class="faction-title villain-faction" style="font-size:1rem;">Sith & Separatists</h2>
+                    <div class="button-group" id="opp-villain-roster"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pauseOverlay">
+            <div class="pause-box">
+                <div class="pause-title">PAUSED</div>
+                <div class="pause-divider"></div>
+                <button class="pause-btn pause-btn-resume" id="pauseResumeBtn">▶ Resume</button>
+                <button class="pause-btn pause-btn-backup" id="pauseBackupBtn" style="display:none;">📡 Call for Backup</button>
+                <button class="pause-btn pause-btn-quit" id="pauseQuitBtn">✕ Quit Battle</button>
+                <div class="pause-hint">ESC to resume</div>
+            </div>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+        <div id="mobileControls" class="mobile-controls" aria-hidden="true">
+            <div class="mobile-controls-inner">
+                <div class="touch-stick-wrap">
+                    <div class="touch-stick-base" id="touchStickBase" role="presentation">
+                        <div class="touch-stick-knob" id="touchStickKnob"></div>
+                    </div>
+                </div>
+                <div class="touch-fire-wrap">
+                    <button type="button" class="touch-fire-btn" id="touchFireBtn" aria-label="Fire weapon">🔫</button>
+                </div>
+            </div>
+        </div>
+        <div id="hud" class="hud">
+            <div class="hud-side">
+                <div class="portrait-wrap">
+                    <div id="playerPortrait" class="portrait-ring" style="color:#00A4FF;border-color:#00A4FF;">⚔️</div>
+                    <div class="portrait-info">
+                        <span id="playerLabel" class="portrait-name"></span>
+                        <span id="playerWeaponLabel" class="portrait-weapon"></span>
+                    </div>
+                </div>
+                <div class="health-bar-container">
+                    <div id="playerHealthBar" class="health-bar"></div>
+                </div>
+                <div id="playerSubBars" class="sub-bars-container"></div>
+                <span id="playerHealthText" class="health-text"></span>
+                <div class="round-pips" id="playerPips"></div>
+            </div>
+            <div class="hud-side">
+                <div class="portrait-wrap">
+                    <div id="enemyPortrait" class="portrait-ring" style="color:#FF3333;border-color:#FF3333;">⚔️</div>
+                    <div class="portrait-info">
+                        <span id="enemyLabel" class="portrait-name"></span>
+                        <span id="enemyWeaponLabel" class="portrait-weapon"></span>
+                    </div>
+                </div>
+                <div class="health-bar-container">
+                    <div id="enemyHealthBar" class="health-bar enemy"></div>
+                </div>
+                <div id="enemySubBars" class="sub-bars-container"></div>
+                <span id="enemyHealthText" class="health-text"></span>
+                <div class="round-pips" id="enemyPips"></div>
+            </div>
+        </div>
+
+        <div id="hudTimer">3:00</div>
+        <div id="messageOverlay" class="message-overlay">
+            <div class="message-box">
+                <h2 id="messageText" class="message-text"></h2>
+                <div id="seriesScoreDisplay" style="font-family:'Orbitron',sans-serif;font-size:0.9rem;margin-bottom:16px;letter-spacing:3px;color:rgba(255,255,255,0.5);display:none;"></div>
+                <div class="end-stats">
+                    <div class="end-stat-box"><div class="end-stat-label">Time</div><div class="end-stat-val" id="endTime">0:00</div></div>
+                    <div class="end-stat-box"><div class="end-stat-label">Kills</div><div class="end-stat-val" id="endKills">0</div></div>
+                    <div class="end-stat-box"><div class="end-stat-label">HP Left</div><div class="end-stat-val" id="endHP">0</div></div>
+                </div>
+                <div class="end-stats" id="endRoundStats" style="margin-top:6px;">
+                    <div class="end-stat-box"><div class="end-stat-label">Damage</div><div class="end-stat-val" id="endDamage">0</div></div>
+                    <div class="end-stat-box"><div class="end-stat-label">Hits</div><div class="end-stat-val" id="endHits">0</div></div>
+                    <div class="end-stat-box"><div class="end-stat-label">Accuracy</div><div class="end-stat-val" id="endAccuracy">—</div></div>
+                </div>
+                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                    <button id="nextRoundButton" style="display:none;padding:15px 30px;font-size:1rem;background:linear-gradient(135deg,#005588,#003366);color:#00cfff;border:1px solid #00A4FF;font-family:'Orbitron',sans-serif;cursor:pointer;border-radius:6px;transition:0.2s;letter-spacing:1px;">Next Round ▶</button>
+                    <button id="rematchButton" style="display:none;padding:15px 30px;font-size:1rem;background:linear-gradient(135deg,#550000,#330000);color:#ff6666;border:1px solid #e94560;font-family:'Orbitron',sans-serif;cursor:pointer;border-radius:6px;transition:0.2s;letter-spacing:1px;">⚔️ Rematch</button>
+                    <button id="restartButton">Return to Base</button>
+                </div>
+            </div>
+        </div>
+        <div id="announcementBanner"><div class="ann-inner"><div class="ann-title" id="annTitle"></div><div class="ann-msg" id="annMsg"></div></div></div>
+        <div id="streakBanner"></div>
+
+        <button id="settingsBtn" title="Settings">⚙️</button>
+        <button id="fullscreenBtn" title="Fullscreen">⛶</button>
+        <div id="settingsPanel" class="settings-panel">
+            <h3>SETTINGS</h3>
+            <div class="settings-slider-row">
+                <label for="musicVolumeSlider">🎵 Music</label>
+                <input type="range" id="musicVolumeSlider" min="0" max="1" step="0.01" value="0.55">
+            </div>
+            <div class="settings-slider-row">
+                <label for="sfxVolumeSlider">🔊 SFX</label>
+                <input type="range" id="sfxVolumeSlider" min="0" max="1" step="0.01" value="1">
+            </div>
+            <button type="button" id="controlsBtn">🎮 Controls</button>
+            <button type="button" id="historyBtn">📜 Match History</button>
+            <button type="button" id="achievementsBtn">🏆 Achievements</button>
+            <button type="button" id="bendyToggleBtn" style="display:none;">🎵 Bendy DLC: OFF</button>
+            <div class="redeem-section">
+                <input type="text" id="redeemCodeInput" placeholder="Enter redeem code..." />
+                <button type="button" id="redeemCodeBtn">Redeem</button>
+            </div>
+            <button type="button" id="clearDataBtn" style="background:rgba(255,50,50,0.1);border-color:#ff3333;color:#ff6666;">🗑️ Clear All Data</button>
+        </div>
+
+        </div>
+
+        <!-- MATCH HISTORY OVERLAY -->
+        <div id="historyOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;align-items:center;justify-content:center;">
+            <div style="background:#0a0f1a;border:1px solid #334;border-radius:12px;padding:24px 20px;width:min(600px,95vw);max-height:80vh;display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <h2 style="font-family:'Orbitron',sans-serif;font-size:1rem;color:#00cfff;letter-spacing:2px;margin:0;">📜 MATCH HISTORY</h2>
+                    <button id="historyCloseBtn" style="background:none;border:1px solid #444;color:#aaa;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:0.85rem;">✕ Close</button>
+                </div>
+                <div id="historyTableWrap" style="overflow-y:auto;flex:1;border-radius:6px;">
+                    <table id="historyTable" style="width:100%;border-collapse:collapse;font-size:0.75rem;font-family:'Orbitron',sans-serif;">
+                        <thead>
+                            <tr style="color:rgba(255,255,255,0.4);">
+                                <th style="padding:6px 8px;text-align:left;position:sticky;top:0;background:#0a0f1a;border-bottom:1px solid #334;">Date</th>
+                                <th style="padding:6px 8px;text-align:left;position:sticky;top:0;background:#0a0f1a;border-bottom:1px solid #334;">You</th>
+                                <th style="padding:6px 8px;text-align:left;position:sticky;top:0;background:#0a0f1a;border-bottom:1px solid #334;">vs</th>
+                                <th style="padding:6px 8px;text-align:center;position:sticky;top:0;background:#0a0f1a;border-bottom:1px solid #334;">Result</th>
+                                <th style="padding:6px 8px;text-align:center;position:sticky;top:0;background:#0a0f1a;border-bottom:1px solid #334;">Dmg</th>
+                                <th style="padding:6px 8px;text-align:center;position:sticky;top:0;background:#0a0f1a;border-bottom:1px solid #334;">Acc</th>
+                                <th style="padding:6px 8px;text-align:center;position:sticky;top:0;background:#0a0f1a;border-bottom:1px solid #334;">Diff</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody"></tbody>
+                    </table>
+                </div>
+                <div id="historyCount" style="text-align:center;color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:1px;font-family:'Orbitron',sans-serif;"></div>
+                <div id="historyEmpty" style="display:none;text-align:center;color:rgba(255,255,255,0.3);font-size:0.8rem;padding:20px;">No matches yet. Fight someone!</div>
+                <button id="historyClearBtn" style="align-self:flex-end;background:none;border:1px solid #553;color:#aa8;border-radius:6px;padding:5px 14px;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:0.65rem;letter-spacing:1px;">Clear History</button>
+            </div>
+        </div>
+
+        <!-- SHOP OVERLAY -->
+        <div id="shopOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;align-items:center;justify-content:center;">
+            <div style="background:#0a0f1a;border:1px solid #334;border-radius:12px;padding:24px 20px;width:min(600px,95vw);max-height:80vh;display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <h2 style="font-family:'Orbitron',sans-serif;font-size:1rem;color:#ffd700;letter-spacing:2px;margin:0;">SHOP</h2>
+                    <button id="shopCloseBtn" style="background:none;border:1px solid #444;color:#aaa;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:0.85rem;">Close</button>
+                </div>
+                <div style="background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:8px;padding:12px;text-align:center;">
+                    <div style="font-family:'Orbitron',sans-serif;font-size:0.75rem;color:rgba(255,215,0,0.7);letter-spacing:1px;margin-bottom:4px;">YOUR CREDITS</div>
+                    <div id="shopCreditsDisplay" style="font-family:'Orbitron',sans-serif;font-size:1.8rem;color:#ffd700;letter-spacing:2px;">0</div>
+                </div>
+                <div id="shopItems" style="display:flex;flex-direction:column;gap:8px;overflow-y:auto;padding-right:4px;"></div>
+            </div>
+        </div>
+
+        <!-- ACHIEVEMENTS OVERLAY -->
+        <div id="achievementsOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;align-items:center;justify-content:center;">
+            <div style="background:#0a0f1a;border:1px solid #334;border-radius:12px;padding:24px 20px;width:min(600px,95vw);max-height:80vh;display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <h2 style="font-family:'Orbitron',sans-serif;font-size:1rem;color:#ffd700;letter-spacing:2px;margin:0;">🏆 ACHIEVEMENTS</h2>
+                    <button id="achievementsCloseBtn" style="background:none;border:1px solid #444;color:#aaa;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:0.85rem;">Close</button>
+                </div>
+                <div id="achievementsList" style="display:flex;flex-direction:column;gap:8px;overflow-y:auto;padding-right:4px;"></div>
+            </div>
+        </div>
+
+        <!-- CONTROLS OVERLAY -->
+        <div id="controlsOverlay">
+            <div class="controls-box">
+                <h2>CONTROLS</h2>
+                <div class="controls-input-label" id="controlsInputLabel">Keyboard &amp; Mouse</div>
+                <div class="controls-grid" id="controlsGrid"></div>
+                <button class="controls-close-btn" id="controlsCloseBtn">Close</button>
+            </div>
+        </div>
+
+        <button type="button" id="devMenuToggle" class="dev-menu-toggle" title="Developer menu" aria-label="Developer menu" aria-expanded="false" aria-controls="devMenuPanel">⚙</button>
+        <div id="devMenuPanel" class="dev-menu-panel" role="dialog" aria-label="Developer menu">
+            <h3>DEV MENU</h3>
+            <button type="button" id="devUnlockAchievements">Unlock all achievements</button>
+            <button type="button" id="devToggleInvincibility">Invincibility: OFF</button>
+            <button type="button" id="devUnlockAllSecrets">Unlock All Secrets</button>
+            <div style="margin-top:12px;">
+                <label style="font-size:0.8rem;color:rgba(255,255,255,0.7);display:block;margin-bottom:4px;">Set Credits (0-100000)</label>
+                <input type="range" id="devCreditsSlider" min="0" max="100000" step="1" style="width:100%;">
+                <span id="devCreditsValue" style="font-size:0.8rem;color:#ffd700;">0</span>
+            </div>
+            <button type="button" id="devValidateRoster">🔍 Validate Roster Data</button>
+            <div id="devValidationOutput" class="dev-validation-output" style="display:none;"></div>
+            <p class="dev-menu-hint">Only available on local / file builds. Hidden on itch.io.</p>
+        </div>
+    </div>
+
+
+    <script src="game.js"></script>
+</body>
+</html>
