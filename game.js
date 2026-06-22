@@ -4850,6 +4850,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 touchMove.y = 0;
                 touchFire = false;
                 if (touchStickKnob) touchStickKnob.style.transform = 'translate(0,0)';
+                // Reset achievement counters
+                saberWinCount = 0;
+                saberWinCount2 = 0;
+                blasterWinCount = 0;
+                spaceWinCount = 0;
+                hanWinCount = 0;
+                vaderConsecutiveWins = 0;
+                lastPlayedCharacterId = null;
                 resizeCanvas();
                 updateMobileControlsVisibility();
             });
@@ -4868,6 +4876,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 playerWins = 0; enemyWins = 0; isNextRound = false;
                 deathParticles = [];
                 floatNums = [];
+                // Reset achievement counters for fresh series
+                saberWinCount = 0;
+                saberWinCount2 = 0;
+                blasterWinCount = 0;
+                spaceWinCount = 0;
+                hanWinCount = 0;
+                vaderConsecutiveWins = 0;
+                lastPlayedCharacterId = null;
                 setupGame(seriesPlayerCharId, seriesEnemyCharId);
             });
 
@@ -4967,6 +4983,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 touchMove.y = 0;
                 touchFire = false;
                 if (touchStickKnob) touchStickKnob.style.transform = 'translate(0,0)';
+                // Reset achievement counters
+                saberWinCount = 0;
+                saberWinCount2 = 0;
+                blasterWinCount = 0;
+                spaceWinCount = 0;
+                hanWinCount = 0;
+                vaderConsecutiveWins = 0;
+                lastPlayedCharacterId = null;
                 resizeCanvas();
                 updateMobileControlsVisibility();
             });
